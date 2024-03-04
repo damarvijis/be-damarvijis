@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get("/", (_req, res) => {
-	res.status(200).write("Damar app BE App VPS!")
+	res.status(200).write("Damar BE App VPS!")
 	res.end()
 })
 
