@@ -22,7 +22,6 @@ jobs:
           name: gh_key
           config: |
             StrictHostKeyChecking no
-      - run: rsync --mkpath -lpr --delete --exclude .git ./ damarvijis@damarvijis.com:/var/www/app-be
       - run: ssh damarvijis@damarvijis.com "cd /var/www/app-be && pm2 restart app-be || pm2 start --name app-be-dev node index.js --port 8080"
         
   
