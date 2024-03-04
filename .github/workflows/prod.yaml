@@ -18,7 +18,7 @@ jobs:
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            echo "Nice Job!!!"
-      # - run: ssh damarvijis@damarvijis.com "cd /var/www/app-be && pm2 restart app-be || pm2 start --name app-be-dev node index.js --port 8080"
+            cd /var/www/app-be && pm2 restart app-be || pm2 start --name app-be-dev node index.js --port 8080
+      
         
   

@@ -18,6 +18,6 @@ jobs:
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            # echo "Nice Job!!!"
-      # - run: ssh damarvijis@damarvijis.com "cd /var/www/app-be-stg && pm2 restart app-be-stg || pm2 start --name app-be-dev node index.js --port 8081"
+            cd /var/www/app-be-stg && pm2 restart app-be-stg || pm2 start --name app-be-dev node index.js --port 8081
+     
       
