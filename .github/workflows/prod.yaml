@@ -8,8 +8,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        name: 'Checkout repository'
       - uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -18,7 +16,10 @@ jobs:
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            cd /var/www/app-be && pm2 restart app-be || pm2 start --name app-be-dev node index.js --port 8080
+            cd /var/www/app-be 
+            git pull origin master
+            npm ci
+            pm2 restart app-be || pm2 start index.js --name app-be -- 8080
       
         
   
