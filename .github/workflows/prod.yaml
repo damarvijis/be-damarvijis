@@ -8,6 +8,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Start SSH agent
+        run: |
+          eval $(ssh-agent -s)
+          ssh-add <(echo "$DEPLOY_KEY")
+          echo "$PASSPHRASE" | ssh-add -
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
