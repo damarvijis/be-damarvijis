@@ -1,12 +1,13 @@
 name: Deploy to dev
 on:
   workflow_dispatch: {}
+  push:
+    branches:
+      - master
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        name: 'Checkout repository'
       - uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -15,5 +16,8 @@ jobs:
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            cd /var/www/app-be-dev && pm2 restart app-be-dev || pm2 start --name app-be-dev node index.js --port 8082
+            cd /var/www/app-be 
+            git pull origin master
+            npm ci
+            pm2 restart app-be-dev || pm2 start index.js --name app-be-dev -- 8082
     
