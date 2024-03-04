@@ -7,15 +7,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: 'Checkout repository'
-      - uses: actions/setup-node@v3
+      - uses: appleboy/ssh-action@master
         with:
-          node-version: "18"
-      - run: npm ci
-      - uses: shimataro/ssh-key-action@v2
-        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
-          known_hosts: unnecessary
-          config: |
-            StrictHostKeyChecking no
-      - run: rsync --mkpath -lpr --delete --exclude .git ./ damarvijis@damarvijis.com:/var/www/app-be-dev
-      - run: ssh damarvijis@damarvijis.com "cd /var/www/app-be-dev && pm2 restart app-be-dev || pm2 start --name app-be-dev node index.js --port 8082"
+          port: ${{ secrets.PORT }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            cd /var/www/app-be-dev && pm2 restart app-be-dev || pm2 start --name app-be-dev node index.js --port 8082
+    
