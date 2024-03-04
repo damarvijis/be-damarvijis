@@ -20,7 +20,7 @@ jobs:
           known_hosts: unnecessary
           config: |
             StrictHostKeyChecking no
-      - run: rsync --mkpath -lpr --delete --exclude .git ./ damarvijis@damarvijis.com:/var/www/app-be-prod
-      - run: ssh damarvijis@damarvijis.com "cd /var/www/app-be-prod && pm2 restart app-be-prod || pm2 start --name app-be-prod npm -- run start -- --port=8080"
+      - run: rsync --mkpath -lpr --delete --exclude .git ./ damarvijis@damarvijis.com:/var/www/app-be
+      - run: ssh damarvijis@damarvijis.com "cd /var/www/app-be && pm2 restart app-be || pm2 start --name app-be npm -- run start -- --port=8080"
         
   
