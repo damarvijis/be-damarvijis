@@ -20,4 +20,5 @@ jobs:
             git pull origin master
             npm ci
             pm2 restart app-be-dev || pm2 start index.js --name app-be-dev -- 8082
+            pm2 save
     
