@@ -13,6 +13,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           port: ${{ secrets.PORT }}
+          passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             echo "Nice Job!!!"
       # - run: ssh damarvijis@damarvijis.com "cd /var/www/app-be-dev && pm2 restart app-be-dev || pm2 start --name app-be-dev node index.js --port 8082"
