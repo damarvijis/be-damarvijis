@@ -1,0 +1,26 @@
+name: Deploy to production
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch: {}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: 'Checkout repository'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - run: npm ci
+      - uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_KEY }}
+          known_hosts: unnecessary
+          config: |
+            StrictHostKeyChecking no
+      - run: rsync --mkpath -lpr --delete --exclude .git ./ damarvijis@damarvijis.com:/var/www/app-be-prod
+      - run: ssh damarvijis@damarvijis.com "cd /var/www/app-be-prod && pm2 restart app-be-prod || pm2 start --name app-be-prod npm -- run start -- --port=8080"
+        
+  

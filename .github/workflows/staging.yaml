@@ -1,0 +1,25 @@
+name: Deploy to staging
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: 'Checkout repository'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - run: npm ci
+      - uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_KEY }}
+          known_hosts: unnecessary
+          config: |
+            StrictHostKeyChecking no
+      - run: rsync --mkpath -lpr --delete --exclude .git ./ damarvijis@damarvijis.com:/var/www/app-be-stg
+      - run: ssh damarvijis@damarvijis.com "cd /var/www/app-be-stg && pm2 restart app-be-stg || pm2 start --name app-be-stg npm -- run start -- --port=8081"
+      
