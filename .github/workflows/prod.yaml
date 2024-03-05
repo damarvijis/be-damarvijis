@@ -8,6 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - run: printf "${{ secrets.PROD_ENV }}" >> .env
       - uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -18,7 +19,7 @@ jobs:
             cd /var/www/app-be 
             git pull origin master
             npm ci
-            pm2 restart app-be || pm2 start index.js --name app-be -- 8080
+            pm2 restart app-be || pm2 start index.js --name app-be 
             pm2 save
 
         
