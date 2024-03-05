@@ -8,22 +8,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - run: echo "${{ secrets.DEV_ENV }}" > .env
-      - run: cat .env
-      # - uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USERNAME }}
-      #     key: ${{ secrets.DEPLOY_KEY }}
-      #     port: ${{ secrets.PORT }}
-      #     script: |
-      #       cd /var/www/app-be 
-      #       git pull origin master
-      #       npm ci
-      #       pm2 restart app-be-dev || pm2 start index.js --name app-be-dev
-      #       pm2 save
+      - uses: appleboy/ssh-action@master
+        env:
+          PORT: ${{ secrets.PORT_BE_DEV }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          envs: PORT
+          script: |
+            cd /var/www/app-be 
+            git pull origin master
+            npm ci
+            pm2 restart app-be-dev || pm2 start index.js --name app-be-dev
+            pm2 save
 
 
     
