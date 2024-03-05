@@ -18,7 +18,8 @@ jobs:
             cd /var/www/app-be 
             git pull origin master
             npm ci
-            pm2 restart app-be 
+            pm2 restart app-be || pm2 start index.js --name app-be-dev -- 8080
+            pm2 save
 
         
   
