@@ -8,7 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: printf "${{ secrets.DEV_ENV }}" >> .env
+      - run: echo "${{ secrets.DEV_ENV }}" > .env
       - uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
